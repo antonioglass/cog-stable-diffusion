@@ -12,6 +12,7 @@ from diffusers import (
     EulerAncestralDiscreteScheduler,
     DPMSolverMultistepScheduler,
 )
+from compel import Compel
 
 # MODEL_ID refers to a diffusers-compatible model on HuggingFace
 # e.g. prompthero/openjourney-v2, wavymulder/Analog-Diffusion, etc
@@ -29,6 +30,7 @@ class Predictor(BasePredictor):
         ).to("cuda")
 
         self.pipe.enable_xformers_memory_efficient_attention()
+        self.compel = Compel(tokenizer=self.pipe.tokenizer, text_encoder=self.pipe.text_encoder)
 
     @torch.inference_mode()
     def predict(
@@ -95,9 +97,12 @@ class Predictor(BasePredictor):
 
         self.pipe.scheduler = make_scheduler(scheduler, self.pipe.scheduler.config)
 
+        prompt=[prompt] * num_outputs if prompt is not None else None
+        prompt_embeds = self.compel(prompt)
+
         generator = torch.Generator("cuda").manual_seed(seed)
         output = self.pipe(
-            prompt=[prompt] * num_outputs if prompt is not None else None,
+            prompt_embeds=prompt_embeds,
             negative_prompt=[negative_prompt] * num_outputs
             if negative_prompt is not None
             else None,
