@@ -28,6 +28,8 @@ class Predictor(BasePredictor):
             local_files_only=True,
         ).to("cuda")
 
+        self.pipe.enable_xformers_memory_efficient_attention()
+
     @torch.inference_mode()
     def predict(
         self,
