@@ -1,0 +1,9 @@
+sudo cog predict -i prompt="" \
+	-i negative_prompt="" \
+	-i width= \
+	-i height= \
+	-i num_outputs= \
+	-i num_inference_steps= \
+	-i guidance_scale= \
+	-i scheduler="" \
+	-i seed=
