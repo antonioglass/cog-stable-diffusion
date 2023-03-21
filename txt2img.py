@@ -26,6 +26,8 @@ seed = 55
 
 conditioning = compel.build_conditioning_tensor(prompt)
 negative_conditioning = compel.build_conditioning_tensor(negative_prompt)
+# not sure if it's needed. see more here: https://github.com/damian0815/compel#0110---add-support-for-prompts-longer-than-the-models-max-token-length
+[conditioning, negative_conditioning] = compel.pad_conditioning_tensors_to_same_length([conditioning, negative_conditioning])
 
 pipe = pipe.to("cuda")
 generator = torch.Generator("cuda").manual_seed(seed)
