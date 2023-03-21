@@ -16,7 +16,7 @@ from compel import Compel
 
 # MODEL_ID refers to a diffusers-compatible model on HuggingFace
 # e.g. prompthero/openjourney-v2, wavymulder/Analog-Diffusion, etc
-MODEL_ID = "stabilityai/stable-diffusion-2-1"
+MODEL_ID = "antonioglass/dlbrt"
 MODEL_CACHE = "diffusers-cache"
 
 class Predictor(BasePredictor):
@@ -100,12 +100,16 @@ class Predictor(BasePredictor):
         prompt=[prompt] * num_outputs if prompt is not None else None
         prompt_embeds = self.compel(prompt)
 
+        negative_prompt=[negative_prompt] * num_outputs if negative_prompt is not None else None
+        negative_prompt_embeds = self.compel(negative_prompt)
+
+        # not sure if it's needed. see more here: https://github.com/damian0815/compel#0110---add-support-for-prompts-longer-than-the-models-max-token-length
+        [prompt_embeds, negative_prompt_embeds] = self.compel.pad_conditioning_tensors_to_same_length([prompt_embeds, negative_prompt_embeds])
+
         generator = torch.Generator("cuda").manual_seed(seed)
         output = self.pipe(
             prompt_embeds=prompt_embeds,
-            negative_prompt=[negative_prompt] * num_outputs
-            if negative_prompt is not None
-            else None,
+            negative_prompt_embeds=negative_prompt_embeds,
             width=width,
             height=height,
             guidance_scale=guidance_scale,
