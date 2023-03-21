@@ -14,7 +14,7 @@ pipe.scheduler = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config)
 pipe.enable_xformers_memory_efficient_attention()
 
 prompt = "a closeup portrait of a playful maid, undercut hair, apron, amazing body, pronounced feminine feature, busty, kitchen, [ash blonde | ginger | pink hair], freckles, flirting with camera"
-negative_prompt = "(deformed, distorted, disfigured:1.3), poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, (mutated hands and fingers:1.4), disconnected limbs, mutation>
+negative_prompt = "(deformed, distorted, disfigured:1.3), poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, (mutated hands and fingers:1.4), disconnected limbs, mutation"
 height = 1024
 width = 768
 num_inference_steps = 30
