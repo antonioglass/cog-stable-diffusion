@@ -1,9 +1,16 @@
 sudo cog predict -i prompt="" \
-	-i negative_prompt="" \
-	-i width= \
-	-i height= \
-	-i num_outputs= \
-	-i num_inference_steps= \
-	-i guidance_scale= \
-	-i scheduler="" \
-	-i seed=
+-i negative_prompt="" \
+-i width= \
+-i height= \
+-i num_outputs= \
+-i num_inference_steps= \
+-i guidance_scale= \
+-i scheduler="" \
+-i seed=
+
+Prompt Blending
+prompt text, blue sphere:0.5 red cube:0.5, prompt text
+
+Attention weighting (works between 0 and 2)
+Use (token)1.1 to increase attention
+Use (token)0.9 to decrease attention
